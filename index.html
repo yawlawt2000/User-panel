@@ -180,7 +180,6 @@
     </div>
 
 <script type="module">
-    // Logic remains exactly the same as your original code
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
     import { getFirestore, doc, setDoc, onSnapshot, collection, query, where, getDocs, updateDoc, deleteDoc, increment } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
@@ -244,8 +243,15 @@
         users.forEach(u => {
             const days = Math.ceil((new Date(u.expiryDate) - new Date()) / 86400000);
             let cls = 'bg-green', bdr = '#10b981', txt = days + ' ရက်ကျန်';
-            if(days <= 0) { cls = 'bg-red'; bdr = '#ef4444'; txt = 'Expired'; }
-            else if(days <= 7) { cls = 'bg-yellow'; bdr = '#f59e0b'; txt = days + ' ရက်ပဲကျန်'; }
+            
+            // Status Check
+            if(u.status === "suspended") {
+                cls = 'bg-red'; txt = 'Suspended';
+            } else if(days <= 0) { 
+                cls = 'bg-red'; txt = 'Expired'; 
+            } else if(days <= 7) { 
+                cls = 'bg-yellow'; txt = days + ' ရက်ပဲကျန်'; 
+            }
 
             container.innerHTML += `
                 <div class="u-item">
@@ -273,7 +279,15 @@
         if(!nid || !nuser || currentBalance < (m*50)) return Swal.fire('Error', 'အချက်အလက်မပြည့်စုံပါ သို့မဟုတ် ငွေမလုံလောက်ပါ', 'warning');
 
         const exp = new Date(Date.now() + (m * 30 * 24 * 60 * 60 * 1000)).toISOString().split('T')[0];
-        await setDoc(doc(db, "users", nid), { username: nuser, expiryDate: exp, createdBy: currentUserId });
+        
+        // Added status: "active"
+        await setDoc(doc(db, "users", nid), { 
+            username: nuser, 
+            expiryDate: exp, 
+            createdBy: currentUserId,
+            status: "active" 
+        });
+        
         await updateDoc(doc(db, "users", currentUserId), { balance: increment(-(m*50)) });
         
         Swal.fire('အောင်မြင်သည်', 'အကောင့်ဖွင့်လှစ်ပြီးပါပြီ', 'success');
@@ -291,7 +305,13 @@
         if (months && currentBalance >= (months*50)) {
             let start = new Date(oldDate) < new Date() ? new Date() : new Date(oldDate);
             start.setDate(start.getDate() + (months * 30));
-            await updateDoc(doc(db, "users", id), { expiryDate: start.toISOString().split('T')[0] });
+            
+            // Also ensure status is active when renewing
+            await updateDoc(doc(db, "users", id), { 
+                expiryDate: start.toISOString().split('T')[0],
+                status: "active"
+            });
+            
             await updateDoc(doc(db, "users", currentUserId), { balance: increment(-(months*50)) });
             Swal.fire('အောင်မြင်သည်', 'သက်တမ်းတိုးပြီးပါပြီ', 'success');
         } else if (months) {
