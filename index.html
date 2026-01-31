@@ -7,172 +7,120 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Pyidaungsu:wght@400;700&family=Plus+Jakarta+Sans:wght@400;600;800&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Pyidaungsu:wght@400;700&family=Inter:wght@600;800&display=swap');
         
-        :root { 
-            --p: #6366f1; /* Indigo Primary */
-            --s: #10b981; 
-            --warn: #f59e0b; 
-            --danger: #ef4444; 
-            --dark: #0f172a; 
-            --bg: #f8fafc;
-            --glass: rgba(255, 255, 255, 0.9);
-        }
+        :root { --p: #ff3131; --s: #10b981; --warn: #f59e0b; --danger: #ef4444; --dark: #0f172a; --bg: #f1f5f9; }
+        * { box-sizing: border-box; font-family: 'Pyidaungsu', 'Inter', sans-serif; }
+        body { background: var(--bg); margin: 0; padding: 12px; display: flex; flex-direction: column; align-items: center; }
 
-        * { box-sizing: border-box; font-family: 'Plus Jakarta Sans', 'Pyidaungsu', sans-serif; }
-        
-        body { 
-            background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
-            margin: 0; padding: 20px 15px; 
-            display: flex; flex-direction: column; align-items: center;
-            min-height: 100vh;
-        }
-
-        /* Premium Wallet Card */
+        /* Wallet Card - Centered Design */
         .premium-wallet {
-            width: 100%; max-width: 420px; 
-            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
-            border-radius: 30px; padding: 30px; color: white; margin-bottom: 25px;
-            box-shadow: 0 20px 30px -10px rgba(15, 23, 42, 0.3);
-            text-align: center; position: relative; overflow: hidden;
+            width: 100%; max-width: 400px; background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            border-radius: 30px; padding: 35px 20px; color: white; margin-bottom: 20px;
+            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.2);
+            text-align: center; display: flex; flex-direction: column; align-items: center;
         }
-        .premium-wallet::before {
-            content: ""; position: absolute; top: -50%; left: -50%;
-            width: 200%; height: 200%; background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%);
-        }
+        .wallet-label { font-size: 11px; font-weight: 800; letter-spacing: 2px; opacity: 0.6; margin-bottom: 10px; }
+        .balance-row { display: flex; align-items: center; justify-content: center; gap: 15px; margin-bottom: 15px; }
+        .balance-amount { font-size: 36px; font-weight: 800; font-family: 'Inter'; }
+        .eye-btn { background: rgba(255, 255, 255, 0.1); border: none; color: white; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.3s; }
+        .eye-btn:hover { background: rgba(255, 255, 255, 0.2); }
+        .admin-badge { background: rgba(16, 185, 129, 0.2); color: var(--s); padding: 6px 15px; border-radius: 20px; font-size: 13px; font-weight: bold; border: 1px solid rgba(16, 185, 129, 0.3); }
 
-        .wallet-label { font-size: 10px; font-weight: 800; letter-spacing: 3px; opacity: 0.5; text-transform: uppercase; }
-        .balance-row { display: flex; align-items: center; justify-content: center; gap: 12px; margin: 15px 0; }
-        .balance-amount { font-size: 38px; font-weight: 800; letter-spacing: -1px; }
-        
-        .eye-btn { 
-            background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255,255,255,0.1); 
-            color: white; width: 42px; height: 42px; border-radius: 50%; 
-            cursor: pointer; display: flex; align-items: center; justify-content: center; 
-            backdrop-filter: blur(5px); transition: 0.3s; 
-        }
-
-        /* Modern Form Cards */
-        .form-card {
-            width: 100%; max-width: 420px; background: var(--glass); 
-            border-radius: 28px; padding: 25px; margin-bottom: 20px; 
-            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05);
-            backdrop-filter: blur(10px); border: 1px solid white;
-        }
-
-        .in-box { position: relative; margin-bottom: 18px; }
-        .in-box i { position: absolute; left: 18px; top: 50%; transform: translateY(-50%); color: #64748b; font-size: 14px; }
-        .in-box input, select {
-            width: 100%; padding: 16px 16px 16px 50px; border: 1.5px solid #e2e8f0;
-            border-radius: 18px; outline: none; background: white; font-size: 14px;
-            transition: 0.3s; color: var(--dark);
-        }
-        .in-box input:focus { border-color: var(--p); box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1); }
-
-        /* User List Items */
-        .u-item {
-            background: white; border-radius: 22px; padding: 20px;
-            margin-bottom: 15px; border: 1px solid #f1f5f9;
-            transition: 0.3s; position: relative;
-        }
-        .u-item:hover { transform: translateY(-3px); box-shadow: 0 12px 20px -10px rgba(0,0,0,0.1); }
-        
-        .status-badge { 
-            position: absolute; top: 20px; right: 20px; padding: 6px 14px; 
-            border-radius: 12px; font-size: 11px; font-weight: 700; 
-        }
-        
-        .bg-green { background: #ecfdf5; color: #059669; }
-        .bg-yellow { background: #fffbeb; color: #d97706; }
-        .bg-red { background: #fef2f2; color: #dc2626; }
-
-        /* Button Styling */
-        .btn-main {
-            width: 100%; padding: 16px; background: var(--dark); color: white;
-            border: none; border-radius: 18px; font-weight: 700; font-size: 15px;
-            cursor: pointer; transition: 0.3s; margin-top: 5px;
-        }
-        .btn-main:active { transform: scale(0.97); }
-
-        .btn-group { display: flex; gap: 12px; margin-top: 20px; }
-        .btn { 
-            flex: 1; padding: 12px; border-radius: 14px; border: none; 
-            font-size: 12px; font-weight: 700; cursor: pointer; 
-            display: flex; align-items: center; justify-content: center; gap: 8px;
-            transition: 0.2s;
-        }
-        .btn-renew { background: #eef2ff; color: #4f46e5; }
-        .btn-delete { background: #fff1f2; color: #e11d48; }
-        
-        /* Messenger Link Modern */
+        /* Messenger Link */
         .admin-messenger {
-            display: flex; align-items: center; justify-content: center; gap: 10px;
-            width: 100%; max-width: 420px; background: #fff; color: #0084ff;
-            text-decoration: none; padding: 16px; border-radius: 20px;
-            font-weight: 800; margin-bottom: 25px; font-size: 14px;
-            border: 2px solid #e0f2fe; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+            width: 100%; max-width: 400px; background: #0084ff; color: white;
+            text-decoration: none; padding: 14px; border-radius: 18px;
+            font-weight: bold; margin-bottom: 20px; font-size: 14px; transition: 0.3s;
+        }
+        .admin-messenger:active { transform: scale(0.98); }
+
+        /* Form Card */
+        .form-card {
+            width: 100%; max-width: 400px; background: white; border-radius: 24px;
+            padding: 25px; margin-bottom: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+        .in-box { position: relative; margin-bottom: 15px; width: 100%; }
+        .in-box i { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: #94a3b8; }
+        .in-box input, select {
+            width: 100%; padding: 14px 14px 14px 45px; border: 1.5px solid #f1f5f9;
+            border-radius: 15px; outline: none; background: #f8fafc; font-size: 14px;
         }
 
-        #portal-ui { display: none; width: 100%; max-width: 420px; }
+        /* User List Section */
+        .user-page-container {
+            width: 100%; max-width: 400px; background: #fff; border-radius: 24px;
+            padding: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+        .u-item {
+            background: #f8fafc; border-radius: 18px; padding: 18px;
+            margin-bottom: 15px; border-left: 6px solid #e2e8f0; position: relative;
+        }
+        .status-badge { position: absolute; top: 15px; right: 15px; padding: 4px 12px; border-radius: 20px; font-size: 10px; font-weight: bold; }
+        .bg-green { background: #dcfce7; color: #166534; }
+        .bg-yellow { background: #fef9c3; color: #854d0e; }
+        .bg-red { background: #fee2e2; color: #991b1b; }
+
+        .btn-group { display: flex; gap: 10px; margin-top: 15px; }
+        .btn { flex: 1; padding: 12px; border-radius: 12px; border: none; font-size: 12px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; }
+        .btn-renew { background: #eff6ff; color: #1d4ed8; }
+        .btn-delete { background: #fff1f2; color: #be123c; }
+
+        #portal-ui { display: none; width: 100%; max-width: 400px; }
     </style>
 </head>
 <body>
 
-    <div id="login-section" class="form-card" style="margin-top: 60px; text-align: center;">
-        <div style="width: 80px; height: 80px; background: #f8fafc; border-radius: 24px; display: flex; align-items: center; justify-content: center; margin: 0 auto 25px; transform: rotate(-10deg); box-shadow: 0 10px 20px rgba(0,0,0,0.05);">
-            <i class="fas fa-shield-heart" style="font-size: 35px; color: var(--p);"></i>
+    <div id="login-section" class="form-card" style="text-align: center; margin-top: 50px;">
+        <div style="width: 70px; height: 70px; background: #f1f5f9; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px;">
+            <i class="fas fa-shield-alt" style="font-size: 30px; color: var(--dark);"></i>
         </div>
-        <h2 style="margin:0 0 10px 0; font-weight: 800;">KSO VIP</h2>
-        <p style="color: #64748b; font-size: 13px; margin-bottom: 30px;">Admin Management Portal</p>
-        
+        <h2 style="margin:0 0 25px 0;">KSO VIP ADMIN</h2>
         <div class="in-box"><i class="fas fa-user"></i><input type="text" id="login-username" placeholder="Username"></div>
         <div class="in-box"><i class="fas fa-key"></i><input type="password" id="login-pw" placeholder="Password"></div>
-        <button onclick="handleLogin()" class="btn-main" style="background: var(--p);">LOGIN NOW</button>
+        <button onclick="handleLogin()" style="width:100%; padding:15px; background:var(--dark); color:white; border:none; border-radius:15px; font-weight:bold; cursor:pointer;">LOGIN</button>
     </div>
 
     <div id="portal-ui">
         <div class="premium-wallet">
-            <span class="wallet-label">Current Balance</span>
+            <span class="wallet-label">TOTAL BALANCE</span>
             <div class="balance-row">
                 <span id="display-balance" class="balance-amount">0 BAHT</span>
                 <button onclick="toggleBalance()" class="eye-btn"><i id="eye-icon" class="fas fa-eye"></i></button>
             </div>
-            <div style="display: inline-flex; align-items: center; background: rgba(255,255,255,0.1); padding: 8px 18px; border-radius: 100px; font-size: 13px; backdrop-filter: blur(10px);">
-                <i class="fas fa-circle-check" style="color: var(--s); margin-right: 8px;"></i>
-                <span id="display-name" style="font-weight: 600;">-</span>
+            <div class="admin-badge">
+                <i class="fas fa-user-check"></i> <span id="display-name">-</span>
             </div>
         </div>
 
-        <a href="https://m.me/yawlawt2431" target="_blank" class="admin-messenger">
-            <i class="fab fa-facebook-messenger" style="font-size: 18px;"></i> Admin ဆက်သွယ်ရန်
+        <a href="https://m.me/kyawsoe.oo.1292019" target="_blank" class="admin-messenger">
+            <i class="fab fa-facebook-messenger"></i> Admin ဆက်သွယ်ရန်
         </a>
 
         <div class="form-card">
-            <h4 style="margin:0 0 20px 0; display: flex; align-items: center; gap: 10px;">
-                <span style="width:30px; height:30px; background: #ecfdf5; color: var(--s); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 14px;"><i class="fas fa-plus"></i></span>
-                အကောင့်သစ်ဖွင့်ရန်
-            </h4>
-            <div class="in-box"><i class="fas fa-fingerprint"></i><input type="text" id="new-id" placeholder="ID / Token"></div>
-            <div class="in-box"><i class="fas fa-user-tag"></i><input type="text" id="new-user" placeholder="အမည်"></div>
+            <h4 style="margin:0 0 20px 0;"><i class="fas fa-user-plus" style="color:var(--s)"></i> အကောင့်သစ်ဖွင့်ရန်</h4>
+            <div class="in-box"><i class="fas fa-id-card"></i><input type="text" id="new-id" placeholder="ID / Token"></div>
+            <div class="in-box"><i class="fas fa-user"></i><input type="text" id="new-user" placeholder="နာမည်"></div>
             <div class="in-box">
-                <i class="fas fa-clock"></i>
+                <i class="fas fa-calendar-check"></i>
                 <select id="month-select">
                     <option value="1">၁ လစာ (50 B)</option>
                     <option value="2">၂ လစာ (100 B)</option>
                 </select>
             </div>
-            <button onclick="createNewUser()" class="btn-main" style="background: var(--s);">အကောင့်ဖွင့်မည်</button>
+            <button onclick="createNewUser()" style="width:100%; padding:15px; background:var(--s); color:white; border:none; border-radius:15px; font-weight:bold; cursor:pointer;">အကောင့်ဖွင့်မည်</button>
         </div>
 
-        <div class="form-card" style="background: none; box-shadow: none; padding: 0;">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px; padding: 0 5px;">
-                <h4 style="margin:0; font-weight: 800;">အသုံးပြုသူများ</h4>
-                <span id="user-count" style="background: white; padding: 4px 12px; border-radius: 10px; font-weight:700; color:var(--p); font-size:12px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">0 Users</span>
+        <div class="user-page-container">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+                <h4 style="margin:0;">အသုံးပြုသူများ</h4>
+                <span id="user-count" style="font-weight:bold; color:var(--s); font-size:12px;">0 Users</span>
             </div>
             
             <div class="in-box">
-                <i class="fas fa-magnifying-glass"></i>
-                <input type="text" id="search-input" placeholder="User ရှာဖွေရန်..." onkeyup="filterUsers()" style="border-radius: 20px;">
+                <i class="fas fa-search"></i>
+                <input type="text" id="search-input" placeholder="User ရှာဖွေရန်..." onkeyup="filterUsers()">
             </div>
 
             <div id="user-list-container"></div>
@@ -184,7 +132,7 @@
     import { getFirestore, doc, setDoc, onSnapshot, collection, query, where, getDocs, updateDoc, deleteDoc, increment } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
     const firebaseConfig = {
-        aKey: "AIzaSyDGCsxM1ccZ_ZswwNPZDI-ykOm5yJU1CIw",
+        apiKey: "AIzaSyDGCsxM1ccZ_ZswwNPZDI-ykOm5yJU1CIw",
         authDomain: "yt-plus-f2adb.firebaseapp.com",
         projectId: "yt-plus-f2adb",
         storageBucket: "yt-plus-f2adb.appspot.com",
@@ -199,8 +147,6 @@
     window.handleLogin = async () => {
         const u = document.getElementById('login-username').value.trim();
         const p = document.getElementById('login-pw').value.trim();
-        if(!u || !p) return;
-        
         const q = query(collection(db, "users"), where("username", "==", u), where("password", "==", p));
         const snap = await getDocs(q);
         if(!snap.empty) {
@@ -228,7 +174,7 @@
 
     function updateBalanceUI() {
         const el = document.getElementById('display-balance');
-        el.innerText = isHidden ? "••••••" : currentBalance.toLocaleString() + " BAHT";
+        el.innerText = isHidden ? "**** BAHT" : currentBalance.toLocaleString() + " BAHT";
     }
 
     window.toggleBalance = () => {
@@ -243,25 +189,18 @@
         users.forEach(u => {
             const days = Math.ceil((new Date(u.expiryDate) - new Date()) / 86400000);
             let cls = 'bg-green', bdr = '#10b981', txt = days + ' ရက်ကျန်';
-            
-            // Status Check
-            if(u.status === "suspended") {
-                cls = 'bg-red'; txt = 'Suspended';
-            } else if(days <= 0) { 
-                cls = 'bg-red'; txt = 'Expired'; 
-            } else if(days <= 7) { 
-                cls = 'bg-yellow'; txt = days + ' ရက်ပဲကျန်'; 
-            }
+            if(days <= 0) { cls = 'bg-red'; bdr = '#ef4444'; txt = 'Expired'; }
+            else if(days <= 7) { cls = 'bg-yellow'; bdr = '#f59e0b'; txt = days + ' ရက်ပဲကျန်'; }
 
             container.innerHTML += `
-                <div class="u-item">
+                <div class="u-item" style="border-left-color:${bdr}">
                     <span class="status-badge ${cls}">${txt}</span>
-                    <div style="font-weight:800; font-size:16px; color:var(--dark);">${u.username}</div>
-                    <div style="font-size:12px; color:#94a3b8; margin: 8px 0 2px 0;"><i class="fas fa-id-badge" style="width:15px"></i> ID: ${u.id}</div>
-                    <div style="font-size:12px; color:#94a3b8;"><i class="fas fa-calendar-day" style="width:15px"></i> Exp: ${u.expiryDate}</div>
+                    <div style="font-weight:bold; font-size:15px; color:var(--dark);">${u.username}</div>
+                    <div style="font-size:12px; color:#64748b; margin-top:5px;">ID: ${u.id}</div>
+                    <div style="font-size:12px; color:#64748b;">Exp: ${u.expiryDate}</div>
                     <div class="btn-group">
-                        <button class="btn btn-renew" onclick="renewUser('${u.id}', '${u.expiryDate}')"><i class="fas fa-rotate"></i> သက်တမ်းတိုး</button>
-                        <button class="btn btn-delete" onclick="deleteUser('${u.id}')"><i class="fas fa-trash-can"></i> ဖျက်မည်</button>
+                        <button class="btn btn-renew" onclick="renewUser('${u.id}', '${u.expiryDate}')"><i class="fas fa-sync-alt"></i> သက်တမ်းတိုး</button>
+                        <button class="btn btn-delete" onclick="deleteUser('${u.id}')"><i class="fas fa-trash-alt"></i> ဖျက်မည်</button>
                     </div>
                 </div>`;
         });
@@ -276,18 +215,10 @@
         const nid = document.getElementById('new-id').value.trim();
         const nuser = document.getElementById('new-user').value.trim();
         const m = parseInt(document.getElementById('month-select').value);
-        if(!nid || !nuser || currentBalance < (m*50)) return Swal.fire('Error', 'အချက်အလက်မပြည့်စုံပါ သို့မဟုတ် ငွေမလုံလောက်ပါ', 'warning');
+        if(!nid || !nuser || currentBalance < (m*50)) return Swal.fire('Error', 'အချက်အလက်မပြည့်စုံပါ', 'warning');
 
         const exp = new Date(Date.now() + (m * 30 * 24 * 60 * 60 * 1000)).toISOString().split('T')[0];
-        
-        // Added status: "active"
-        await setDoc(doc(db, "users", nid), { 
-            username: nuser, 
-            expiryDate: exp, 
-            createdBy: currentUserId,
-            status: "active" 
-        });
-        
+        await setDoc(doc(db, "users", nid), { username: nuser, expiryDate: exp, createdBy: currentUserId });
         await updateDoc(doc(db, "users", currentUserId), { balance: increment(-(m*50)) });
         
         Swal.fire('အောင်မြင်သည်', 'အကောင့်ဖွင့်လှစ်ပြီးပါပြီ', 'success');
@@ -295,23 +226,11 @@
     };
 
     window.renewUser = async (id, oldDate) => {
-        const { value: months } = await Swal.fire({ 
-            title: 'သက်တမ်းတိုးရန်', 
-            input: 'select', 
-            inputOptions: { '1': '၁ လစာ (50 B)', '2': '၂ လစာ (100 B)' }, 
-            showCancelButton: true,
-            confirmButtonColor: '#6366f1'
-        });
+        const { value: months } = await Swal.fire({ title: 'သက်တမ်းတိုးရန်', input: 'select', inputOptions: { '1': '၁ လစာ (50 B)', '2': '၂ လစာ (100 B)' }, showCancelButton: true });
         if (months && currentBalance >= (months*50)) {
             let start = new Date(oldDate) < new Date() ? new Date() : new Date(oldDate);
             start.setDate(start.getDate() + (months * 30));
-            
-            // Also ensure status is active when renewing
-            await updateDoc(doc(db, "users", id), { 
-                expiryDate: start.toISOString().split('T')[0],
-                status: "active"
-            });
-            
+            await updateDoc(doc(db, "users", id), { expiryDate: start.toISOString().split('T')[0] });
             await updateDoc(doc(db, "users", currentUserId), { balance: increment(-(months*50)) });
             Swal.fire('အောင်မြင်သည်', 'သက်တမ်းတိုးပြီးပါပြီ', 'success');
         } else if (months) {
@@ -320,15 +239,7 @@
     };
 
     window.deleteUser = async (id) => {
-        const result = await Swal.fire({ 
-            title: 'ဖျက်မှာ သေချာလား?', 
-            text: "ပြန်ယူ၍မရနိုင်ပါ!", 
-            showCancelButton: true, 
-            icon: 'warning', 
-            confirmButtonColor: '#ef4444',
-            cancelButtonColor: '#64748b'
-        });
-        if(result.isConfirmed) {
+        if((await Swal.fire({ title: 'ဖျက်မှာ သေချာလား?', text: "ပြန်ယူ၍မရနိုင်ပါ!", showCancelButton: true, icon: 'warning', confirmButtonColor: '#dc2626' })).isConfirmed) {
             await deleteDoc(doc(db, "users", id));
         }
     };
